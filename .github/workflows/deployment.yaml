@@ -26,5 +26,4 @@ jobs:
 
       - name: Deploy to Heroku
         run: |
-          heroku git:remote -a codecool-app
           git push heroku main
