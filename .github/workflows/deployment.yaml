@@ -24,6 +24,12 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: codecool-app
 
+      - name: Set up Heroku remote repository
+        uses: heroku/heroku-build@v3
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: codecool-app
+
       - name: Deploy to Heroku
         run: |
           git push heroku main
