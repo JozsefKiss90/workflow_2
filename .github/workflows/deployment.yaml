@@ -1,0 +1,30 @@
+name: Deployment
+
+on:
+  workflow_run:
+    workflows: ["CI-CD"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    name: Deploy App
+    if: github.event.workflow_run.conclusion == 'success' &&
+        (github.event.workflow_run.event == 'push' ||
+         github.event.workflow_run.event == 'pull_request')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: codecool-app
+
+      - name: Deploy to Heroku
+        run: |
+          heroku git:remote -a codecool-app
+          git push heroku main
